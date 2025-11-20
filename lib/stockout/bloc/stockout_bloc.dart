@@ -19,7 +19,7 @@ class StockoutBloc extends Bloc<StockoutEvent, StockoutState> {
       final prefs = await SharedPreferences.getInstance();
       emit(StockoutLoadingState());
       try {
-        StockoutListRespModel stockoutresp = await stockoutRepo.loginpage(
+        StockoutListRespModel stockoutresp = await stockoutRepo.stockoutListpage(
           jsonPostdata: StockoutListRequestModel(
             userName: prefs.getString("saved_username"),
             passWord: prefs.getString("saved_password"),
@@ -41,7 +41,7 @@ class StockoutBloc extends Bloc<StockoutEvent, StockoutState> {
       final prefs = await SharedPreferences.getInstance();
       emit(StockoutLoadingState());
       try {
-        StockoutAddRespModel stockoutresp = await stockoutRepo.loginpage(
+        StockoutAddRespModel stockoutresp = await stockoutRepo.stockoutAddpage(
           jsonPostdata: StockoutAddReqModel(
             userName: prefs.getString("saved_username"),
             passWord: prefs.getString("saved_password"),

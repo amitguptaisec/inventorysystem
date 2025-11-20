@@ -19,41 +19,43 @@ class _LoginMasterState extends State<LoginMaster> {
   Widget dynamicContent = Container();
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<LoginBloc>(
-      create: (context) => LoginBloc(loginRepo: LoginRepoImpl()),
-      child: BlocListener<LoginBloc, LoginState>(
-        listener: (context, state) {
-          if (state is LoginSuccessstate) {
-            if (state.loginResp.status == 200) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => SimpleDashboardScreen()),
-              );
-            } else {
+    return Scaffold(
+      body: BlocProvider<LoginBloc>(
+        create: (context) => LoginBloc(loginRepo: LoginRepoImpl()),
+        child: BlocListener<LoginBloc, LoginState>(
+          listener: (context, state) {
+            if (state is LoginSuccessstate) {
+              if (state.loginResp.status == 200) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => SimpleDashboardScreen()),
+                );
+              } else {
+                showAppSnack(
+                  context,
+                  state.loginResp.message.toString(),
+                  color: AppColors.error,
+                );
+              }
+            }
+            if (state is LoginFailedState) {
               showAppSnack(
                 context,
-                state.loginResp.message.toString(),
+                state.message.toString(),
                 color: AppColors.error,
               );
             }
-          }
-          if (state is LoginFailedState) {
-            showAppSnack(
-              context,
-              state.message.toString(),
-              color: AppColors.error,
-            );
-          }
-        },
-        child: BlocBuilder<LoginBloc, LoginState>(
-          builder: (context, state) {
-            if (state is LoginInitial) {}
-            if (state is LoginLoadingState) {
-             return Center(child: CircularProgressIndicator());
-            }
-
-            return LoginScreen();
           },
+          child: BlocBuilder<LoginBloc, LoginState>(
+            builder: (context, state) {
+              if (state is LoginInitial) {}
+              if (state is LoginLoadingState) {
+               return Center(child: CircularProgressIndicator());
+              }
+      
+              return LoginScreen();
+            },
+          ),
         ),
       ),
     );

@@ -37,9 +37,11 @@ class _StockoutListMasterState extends State<StockoutListMaster> {
         },
         child: BlocBuilder<StockoutBloc, StockoutState>(
           builder: (context, state) {
-            if (state is StockoutInitial) {}
+            if (state is StockoutInitial) {
+               context.read<StockoutBloc>().add(StockoutListEvent());
+            }
             if (state is StockoutLoadingState) {
-              Center(child: CircularProgressIndicator());
+           return   Center(child: CircularProgressIndicator());
             }
             if (state is StockoutListFailedState) {}
             return StockoutListScreen(stockoutListdata: stockoutListData);

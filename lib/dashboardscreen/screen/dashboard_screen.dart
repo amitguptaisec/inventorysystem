@@ -3,6 +3,7 @@ import 'package:inventorysystem/widgets/custom_card_text_icon_center.dart';
 import '../../inventory/pages/inventory_add_master.dart';
 import '../../inventory/pages/inventory_list_master.dart';
 import '../../stockout/pages/stockout_add_master.dart';
+import '../../stockout/pages/stockout_list_master.dart';
 import '../../theme/app_text_styles.dart';
 import '../../widgets/custom_scaffold_widget.dart';
 import '../../widgets/custom_text_widget.dart';
@@ -72,7 +73,7 @@ class SimpleDashboardScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => StockoutAddMaster()),
+                      MaterialPageRoute(builder: (_) => StockoutListMaster()),
                     );
                   },
                 ),

@@ -30,7 +30,7 @@ class DioClient extends ApiClient {
     String uri, {
     Map<String, dynamic>? queryParameters,
     Options? options,
-    bool isWithHeader = false,
+    bool isWithHeader = true,
   }) async {
     try {
       // if(uri.contains(ApiConst.liveDomain)){

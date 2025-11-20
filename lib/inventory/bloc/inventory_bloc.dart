@@ -19,7 +19,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       final prefs = await SharedPreferences.getInstance();
       emit(InventoryLoadingState());
       try {
-        InventoryListRespModel inventoryresp = await inventoryRepo.loginpage(
+        InventoryListRespModel inventoryresp = await inventoryRepo.inventoryListpage(
           jsonPostdata: InventoryListRequestModel(
             userName: prefs.getString("saved_username"),
             passWord: prefs.getString("saved_password"),
@@ -43,7 +43,7 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       final prefs = await SharedPreferences.getInstance();
       emit(InventoryLoadingState());
       try {
-        InventoryAddRespModel invnetoryresp = await inventoryRepo.loginpage(
+        InventoryAddRespModel invnetoryresp = await inventoryRepo.inventoryAddpage(
           jsonPostdata: InventoryAddReqModel(
             userName: prefs.getString("saved_username"),
             passWord: prefs.getString("saved_password"),
