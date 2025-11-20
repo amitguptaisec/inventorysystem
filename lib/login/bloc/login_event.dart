@@ -15,4 +15,14 @@ class LoginPageEvent extends LoginEvent {
 
   @override
   List<Object> get props => [];
-} //Get
+} 
+
+class CategoryListEvent extends LoginEvent {
+  final String? userId;
+  final String? pasword;
+
+  const CategoryListEvent({this.userId, this.pasword});
+
+  @override
+  List<Object> get props => [];
+} 

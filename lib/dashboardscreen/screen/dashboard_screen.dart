@@ -38,16 +38,16 @@ class SimpleDashboardScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(width: 16),
-                _dashboardCard(
-                  title: "Add Stockout",
-                  icon: Icons.remove_circle,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => StockoutAddMaster()),
-                    );
-                  },
-                ),
+                // _dashboardCard(
+                //   title: "Add Stockout",
+                //   icon: Icons.remove_circle,
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (_) => StockoutAddMaster()),
+                //     );
+                //   },
+                // ),
               ],
             ),
 

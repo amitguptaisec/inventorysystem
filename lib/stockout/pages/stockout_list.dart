@@ -46,7 +46,7 @@ class StockoutListScreen extends StatelessWidget {
                         "${itemlist?[index].categoryName}: "
                         "${itemlist?[index].inventoryName}",
                       ),
-                      subtitle: Text("${itemlist?[index].quantity}"),
+                      subtitle: Text("Quantity: ${itemlist?[index].quantity}"),
                     ),
                   );
                 },

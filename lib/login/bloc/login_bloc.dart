@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/category_list_singleton.dart';
+import '../model/category_list_req_model.dart';
+import '../model/category_list_resp_model.dart';
 import '../model/login_page_request_model.dart';
 import '../model/login_page_response_model.dart';
 
@@ -45,24 +48,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } //
     });
 
-    // on<LoginPasswordChanged>((event, emit) {
-    //   emit(state.copyWith(password: event.password));
-    // });
+     on<CategoryListEvent>((event, emit) async {
+      final prefs = await SharedPreferences.getInstance();
+      emit(CategoryLoadingState());
+      try {
+        CategoryListRespModel categoryresp = await loginRepo
+            .categoryListpage(
+              jsonPostdata: CategoryListRequestModel(
+                userName: prefs.getString("saved_username"),
+                passWord: prefs.getString("saved_password"),
+              ),
+            );
 
-    // on<LoginSubmitted>((event, emit) async {
-    //   emit(state.copyWith(isSubmitting: true, error: null));
-
-    //   final success = await repository.login(state.username, state.password);
-
-    //   if (success) {
-    //     emit(state.copyWith(isSubmitting: false, success: true));
-    //   } else {
-    //     emit(state.copyWith(
-    //       isSubmitting: false,
-    //       success: false,
-    //       error: "Invalid username or password",
-    //     ));
-    //   }
-    // });
+        if (categoryresp.status == 200) {
+          CategoryListGlobalData().setCategoryList(categoryresp);
+          emit(CategoryListSuccessstate(categoryListResp: categoryresp));
+        } 
+      } catch (e) {
+        debugPrint("-----> $e");
+      } //
+    });
   }
 }

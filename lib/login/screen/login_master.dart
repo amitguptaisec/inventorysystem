@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventorysystem/login/screen/login_page.dart';
 import 'package:inventorysystem/theme/app_colors.dart';
-
 import '../../dashboardscreen/screen/dashboard_screen.dart';
 import '../../utils/customsnackbar.dart';
 import '../bloc/login_bloc.dart';
@@ -30,6 +29,7 @@ class _LoginMasterState extends State<LoginMaster> {
                   context,
                   MaterialPageRoute(builder: (_) => SimpleDashboardScreen()),
                 );
+                context.read<LoginBloc>().add(CategoryListEvent());
               } else {
                 showAppSnack(
                   context,
@@ -50,9 +50,9 @@ class _LoginMasterState extends State<LoginMaster> {
             builder: (context, state) {
               if (state is LoginInitial) {}
               if (state is LoginLoadingState) {
-               return Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator());
               }
-      
+
               return LoginScreen();
             },
           ),

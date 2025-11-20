@@ -10,4 +10,5 @@ class ApiConst {
   static const String getStockoutList = '${domain}api/GetStockoutList/';
   static const String addInventory = '${domain}api/AddInventory/';
   static const String addStockout = '${domain}api/AddStockout/';
+  static const String getCategoryList = '${domain}api/GetCategoryList/';
 }

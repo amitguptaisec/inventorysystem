@@ -7,7 +7,9 @@ import '../repository/stockout_repository.dart';
 import 'add_stockout_page.dart';
 
 class StockoutAddMaster extends StatefulWidget {
-  const StockoutAddMaster({super.key});
+  final int? inventoryId;
+  final int? inventoryquantity;
+  const StockoutAddMaster({super.key,this.inventoryId,this.inventoryquantity});
 
   @override
   State<StockoutAddMaster> createState() => _StockoutAddMasterState();
@@ -25,7 +27,7 @@ class _StockoutAddMasterState extends State<StockoutAddMaster> {
             if (state.stockoutAddResp.status == 200) {
               showAppSnack(
                 context,
-                state.stockoutAddResp.error.toString(),
+                state.stockoutAddResp.success.toString(),
                 color: AppColors.success,
               );
               Navigator.pop(context);
@@ -45,7 +47,7 @@ class _StockoutAddMasterState extends State<StockoutAddMaster> {
               return Center(child: CircularProgressIndicator());
             }
             if (state is StockoutListFailedState) {}
-            return StockoutAdd();
+            return StockoutAdd(inventoryid:widget.inventoryId,quantity: widget.inventoryquantity,);
           },
         ),
       ),

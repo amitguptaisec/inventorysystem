@@ -23,7 +23,7 @@ class StockoutRepoImpl extends StockoutRepo {
     try {
       String? tokenval = prefs.getString("saved_token");
       Response response = await _apiClient.post(
-        ApiConst.getInventoryList,
+        ApiConst.getStockoutList,
         data: json.encode(jsonPostdata),
         options: Options(
           headers: {
@@ -58,7 +58,7 @@ class StockoutRepoImpl extends StockoutRepo {
     try {
       String? tokenval = prefs.getString("saved_token");
       Response response = await _apiClient.post(
-        ApiConst.addInventory,
+        ApiConst.addStockout,
         data: json.encode(jsonPostdata),
         options: Options(
           headers: {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inventorysystem/stockout/pages/stockout_add_master.dart';
 
+import '../bloc/inventory_bloc.dart';
 import '../model/inventory_list_page_response_model.dart';
 
 class InventoryListScreen extends StatelessWidget {
@@ -44,7 +47,25 @@ class InventoryListScreen extends StatelessWidget {
                         child: Text("${itemlist?[index].inventoryId}"),
                       ),
                       title: Text("${itemlist?[index].inventoryName}"),
-                      subtitle: Text("${itemlist?[index].quantity}"),
+                      subtitle: Text("Quantity: ${itemlist?[index].quantity}"),
+                      trailing: IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => StockoutAddMaster(
+                                inventoryId: itemlist?[index].inventoryId,
+                                inventoryquantity: itemlist?[index].quantity,
+                              ),
+                            ),
+                          ).then((onValue) {
+                            context.read<InventoryBloc>().add(
+                              InventoryListEvent(),
+                            );
+                          });
+                        },
+                        icon: Icon(Icons.shopping_cart_checkout),
+                      ),
                     ),
                   );
                 },

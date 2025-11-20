@@ -17,6 +17,12 @@ class DioClient extends ApiClient {
     );
     dioClient = Dio(baseOptions);
     // dioClient?.interceptors.add(DioCommonHeadersInterceptor());
+    dioClient?.interceptors.add(LogInterceptor(
+  responseBody: true,
+  requestBody: true,
+  requestHeader: true,
+  responseHeader: true,
+));
     if (kDebugMode) {
       dioClient?.interceptors.add(DioLoggingInterceptor());
     }

@@ -24,3 +24,11 @@ class LoginFailedState extends LoginState {
   @override
   List<String> get props => [message.toString()];
 }
+class CategoryLoadingState extends LoginState {}
+
+class CategoryListSuccessstate extends LoginState {
+  final CategoryListRespModel categoryListResp;
+  const CategoryListSuccessstate({required this.categoryListResp});
+  @override
+  List<Object> get props => [categoryListResp];
+}

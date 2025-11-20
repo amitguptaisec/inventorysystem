@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../theme/app_colors.dart';
+import '../../utils/customsnackbar.dart';
 import '../bloc/stockout_bloc.dart';
 
 class StockoutAdd extends StatefulWidget {
-  const StockoutAdd({super.key});
+  final int? inventoryid;
+  final int? quantity;
+  const StockoutAdd({
+    super.key,
+    required this.inventoryid,
+    required this.quantity,
+  });
 
   @override
   State<StockoutAdd> createState() => _StockoutAddState();
 }
 
 class _StockoutAddState extends State<StockoutAdd> {
-  final _inventoryidctl = TextEditingController();
   final _quantityCtl = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -24,16 +31,18 @@ class _StockoutAddState extends State<StockoutAdd> {
         child: Column(
           children: [
             TextField(
-              // controller: _nameCtl,
+              controller: TextEditingController(
+                text: widget.quantity.toString(),
+              ),
               decoration: const InputDecoration(labelText: "Item Name"),
-
+              enabled: false,
               // onChanged: (value) =>
             ),
 
             const SizedBox(height: 12),
 
             TextField(
-              // controller: _qtyCtl,
+              controller: _quantityCtl,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: "Quantity"),
 
@@ -59,12 +68,20 @@ class _StockoutAddState extends State<StockoutAdd> {
 
             ElevatedButton(
               onPressed: () {
-                bloc.add(
-                  StockoutAddEvent(
-                    inventoryId: int.parse(_inventoryidctl.text),
-                    quantity: int.parse(_quantityCtl.text),
-                  ),
-                );
+                if (int.parse(_quantityCtl.text) <= (widget.quantity ?? 0)) {
+                  bloc.add(
+                    StockoutAddEvent(
+                      inventoryId: widget.inventoryid,
+                      quantity: int.parse(_quantityCtl.text),
+                    ),
+                  );
+                } else {
+                  showAppSnack(
+                    context,
+                    'Quantity exceeds',
+                    color: AppColors.error,
+                  );
+                }
               },
               child: const Text("Save"),
             ),

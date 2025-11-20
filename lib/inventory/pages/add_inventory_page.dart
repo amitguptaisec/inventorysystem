@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../utils/category_list_singleton.dart';
 import '../bloc/inventory_bloc.dart';
 
 class InventoryAdd extends StatefulWidget {
@@ -41,19 +41,23 @@ class _InventoryAddState extends State<InventoryAdd> {
 
             const SizedBox(height: 12),
 
-            // DropdownButtonFormField<int>(
-            //   value: state.categoryId,
-            //   decoration: const InputDecoration(labelText: "Category"),
-            //   items: categories
-            //       .map((cat) => DropdownMenuItem<int>(
-            //             value: cat["id"],
-            //             child: Text(cat["name"]),
-            //           ))
-            //       .toList(),
-            //   onChanged: (value) {
-            //     bloc.add(InventoryCategoryChanged(value!));
-            //   },
-            // ),
+            DropdownButtonFormField(
+              decoration: const InputDecoration(labelText: "Category"),
+              items: CategoryListGlobalData()
+                  .categoryListData
+                  ?.success
+                  ?.categoryList
+                  ?.map(
+                    (cat) => DropdownMenuItem(
+                      value: cat,
+                      child: Text(cat.categoryName.toString()),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                _categoryidCtl.text = (value?.categoryId ?? 0).toString();
+              },
+            ),
             const SizedBox(height: 20),
 
             ElevatedButton(

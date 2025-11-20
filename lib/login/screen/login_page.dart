@@ -54,10 +54,10 @@ class LoginScreen extends StatelessWidget {
                     pasword: _passwordCtl.text,
                   ),
                 );
-                 Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => SimpleDashboardScreen()),
-            );
+            //      Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(builder: (_) => SimpleDashboardScreen()),
+            // );
               },
               child: Text("LOGIN", style: AppTextStyles.button),
             ),

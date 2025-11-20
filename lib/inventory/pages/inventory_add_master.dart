@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventorysystem/inventory/repository/inventory_repository.dart';
-
 import '../../theme/app_colors.dart';
 import '../../utils/customsnackbar.dart';
 import '../bloc/inventory_bloc.dart';
@@ -26,7 +25,7 @@ class _InventoryAddMasterState extends State<InventoryAddMaster> {
             if (state.inventoryAddResp.status == 200) {
               showAppSnack(
                 context,
-                state.inventoryAddResp.error.toString(),
+                state.inventoryAddResp.success.toString(),
                 color: AppColors.success,
               );
               Navigator.pop(context);
