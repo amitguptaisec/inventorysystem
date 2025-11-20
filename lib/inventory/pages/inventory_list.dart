@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../model/inventory_list_page_response_model.dart';
+
 class InventoryListScreen extends StatelessWidget {
-  InventoryListScreen({super.key});
+  final InventoryListRespModel? inventoryListdata;
+  InventoryListScreen({super.key, this.inventoryListdata});
 
   final TextEditingController _searchCtl = TextEditingController();
 
@@ -31,13 +34,17 @@ class InventoryListScreen extends StatelessWidget {
             // Inventory List
             Expanded(
               child: ListView.builder(
-                itemCount: 2,
+                itemCount:
+                    inventoryListdata?.success?.inventoryList?.length ?? 0,
                 itemBuilder: (_, index) {
+                  final itemlist = inventoryListdata?.success?.inventoryList;
                   return Card(
                     child: ListTile(
-                      leading: CircleAvatar(child: Text("id")),
-                      title: Text("name"),
-                      subtitle: Text("Qty: 100000"),
+                      leading: CircleAvatar(
+                        child: Text("${itemlist?[index].inventoryId}"),
+                      ),
+                      title: Text("${itemlist?[index].inventoryName}"),
+                      subtitle: Text("${itemlist?[index].quantity}"),
                     ),
                   );
                 },

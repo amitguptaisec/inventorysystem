@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../model/stockout_list_page_response_model.dart';
+
 class StockoutListScreen extends StatelessWidget {
-  StockoutListScreen({super.key});
+  final StockoutListRespModel? stockoutListdata;
+  StockoutListScreen({super.key, this.stockoutListdata});
 
   final TextEditingController _searchCtl = TextEditingController();
 
@@ -31,13 +34,19 @@ class StockoutListScreen extends StatelessWidget {
             // Inventory List
             Expanded(
               child: ListView.builder(
-                itemCount: 2,
+                itemCount: stockoutListdata?.success?.stockoutList?.length ?? 0,
                 itemBuilder: (_, index) {
+                  final itemlist = stockoutListdata?.success?.stockoutList;
                   return Card(
                     child: ListTile(
-                      leading: CircleAvatar(child: Text("id")),
-                      title: Text("name"),
-                      subtitle: Text("Qty: 100000"),
+                      leading: CircleAvatar(
+                        child: Text("${itemlist?[index].stockoutId}"),
+                      ),
+                      title: Text(
+                        "${itemlist?[index].categoryName}: "
+                        "${itemlist?[index].inventoryName}",
+                      ),
+                      subtitle: Text("${itemlist?[index].quantity}"),
                     ),
                   );
                 },

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../dashboardscreen/screen/dashboard_screen.dart'
-    show SimpleDashboardScreen;
+import '../../dashboardscreen/screen/dashboard_screen.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
 import '../../widgets/custom_text_widget.dart';

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../bloc/inventory_bloc.dart';
 
 class InventoryAdd extends StatefulWidget {
   const InventoryAdd({super.key});
@@ -8,8 +11,12 @@ class InventoryAdd extends StatefulWidget {
 }
 
 class _InventoryAddState extends State<InventoryAdd> {
+  final _itemNameCtl = TextEditingController();
+  final _categoryidCtl = TextEditingController();
+  final _quantityCtl = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<InventoryBloc>();
     return Scaffold(
       appBar: AppBar(title: const Text("Add Inventory")),
       body: Padding(
@@ -18,16 +25,14 @@ class _InventoryAddState extends State<InventoryAdd> {
         child: Column(
           children: [
             TextField(
-              // controller: _nameCtl,
+              controller: _itemNameCtl,
               decoration: const InputDecoration(labelText: "Item Name"),
-
-              // onChanged: (value) =>
             ),
 
             const SizedBox(height: 12),
 
             TextField(
-              // controller: _qtyCtl,
+              controller: _quantityCtl,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: "Quantity"),
 
@@ -51,7 +56,18 @@ class _InventoryAddState extends State<InventoryAdd> {
             // ),
             const SizedBox(height: 20),
 
-            ElevatedButton(onPressed: () {}, child: const Text("Save")),
+            ElevatedButton(
+              onPressed: () {
+                bloc.add(
+                  InventoryAddEvent(
+                    categoryId: int.parse(_categoryidCtl.text),
+                    quantity: int.parse(_quantityCtl.text),
+                    inventoryName: _itemNameCtl.text,
+                  ),
+                );
+              },
+              child: const Text("Save"),
+            ),
           ],
         ),
       ),

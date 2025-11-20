@@ -1,7 +1,7 @@
 class ApiConst {
   static const isPointingToLive = false;
 
-  static const uatDomain = "http://192.168.0.2/"; //uat
+  static const uatDomain = "http://192.168.0.2:8000/"; //uat
   static const liveDomain = "http://127.0.0.1:8000/"; //live
 
   static const domain = isPointingToLive ? liveDomain : uatDomain;

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../bloc/stockout_bloc.dart';
 
 class StockoutAdd extends StatefulWidget {
   const StockoutAdd({super.key});
@@ -8,8 +11,11 @@ class StockoutAdd extends StatefulWidget {
 }
 
 class _StockoutAddState extends State<StockoutAdd> {
+  final _inventoryidctl = TextEditingController();
+  final _quantityCtl = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<StockoutBloc>();
     return Scaffold(
       appBar: AppBar(title: const Text("Add Stockout")),
       body: Padding(
@@ -51,7 +57,17 @@ class _StockoutAddState extends State<StockoutAdd> {
             // ),
             const SizedBox(height: 20),
 
-            ElevatedButton(onPressed: () {}, child: const Text("Save")),
+            ElevatedButton(
+              onPressed: () {
+                bloc.add(
+                  StockoutAddEvent(
+                    inventoryId: int.parse(_inventoryidctl.text),
+                    quantity: int.parse(_quantityCtl.text),
+                  ),
+                );
+              },
+              child: const Text("Save"),
+            ),
           ],
         ),
       ),

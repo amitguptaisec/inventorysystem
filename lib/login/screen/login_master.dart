@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventorysystem/login/screen/login_page.dart';
+import 'package:inventorysystem/theme/app_colors.dart';
 
 import '../../dashboardscreen/screen/dashboard_screen.dart';
+import '../../utils/customsnackbar.dart';
 import '../bloc/login_bloc.dart';
 import '../repository/login_repository.dart';
 
@@ -22,9 +24,24 @@ class _LoginMasterState extends State<LoginMaster> {
       child: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccessstate) {
-            Navigator.pushReplacement(
+            if (state.loginResp.status == 200) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => SimpleDashboardScreen()),
+              );
+            } else {
+              showAppSnack(
+                context,
+                state.loginResp.message.toString(),
+                color: AppColors.error,
+              );
+            }
+          }
+          if (state is LoginFailedState) {
+            showAppSnack(
               context,
-              MaterialPageRoute(builder: (_) => SimpleDashboardScreen()),
+              state.message.toString(),
+              color: AppColors.error,
             );
           }
         },
@@ -32,9 +49,9 @@ class _LoginMasterState extends State<LoginMaster> {
           builder: (context, state) {
             if (state is LoginInitial) {}
             if (state is LoginLoadingState) {
-              Center(child: CircularProgressIndicator());
+             return Center(child: CircularProgressIndicator());
             }
-            if (state is LoginFailedState) {}
+
             return LoginScreen();
           },
         ),
