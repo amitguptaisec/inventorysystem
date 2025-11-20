@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/inventory_add_req_model.dart';
 import '../model/inventory_add_resp_model.dart';
@@ -15,19 +16,22 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
 
   InventoryBloc({required this.inventoryRepo}) : super(InventoryInitial()) {
     on<InventoryListEvent>((event, emit) async {
+      final prefs = await SharedPreferences.getInstance();
       emit(InventoryLoadingState());
       try {
         InventoryListRespModel inventoryresp = await inventoryRepo.loginpage(
           jsonPostdata: InventoryListRequestModel(
-            userName: event.userId,
-            passWord: event.pasword,
+            userName: prefs.getString("saved_username"),
+            passWord: prefs.getString("saved_password"),
           ),
         );
 
         if (inventoryresp.status == 200) {
           emit(InventoryListSuccessstate(inventoryListResp: inventoryresp));
         } else {
-          emit(InventoryListFailedState(message: inventoryresp.error.toString()));
+          emit(
+            InventoryListFailedState(message: inventoryresp.error.toString()),
+          );
         }
       } catch (e) {
         debugPrint("-----> $e");
@@ -35,23 +39,26 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       } //
     });
 
-     on<InventoryAddEvent>((event, emit) async {
+    on<InventoryAddEvent>((event, emit) async {
+      final prefs = await SharedPreferences.getInstance();
       emit(InventoryLoadingState());
       try {
         InventoryAddRespModel invnetoryresp = await inventoryRepo.loginpage(
           jsonPostdata: InventoryAddReqModel(
-            userName: event.userId,
-            passWord: event.pasword,
+            userName: prefs.getString("saved_username"),
+            passWord: prefs.getString("saved_password"),
             categoryId: event.categoryId,
             inventoryName: event.inventoryName,
-            quantity:  event.quantity,
+            quantity: event.quantity,
           ),
         );
 
         if (invnetoryresp.status == 200) {
           emit(InventoryAddSuccessstate(inventoryAddResp: invnetoryresp));
         } else {
-          emit(InventoryListFailedState(message: invnetoryresp.error.toString()));
+          emit(
+            InventoryListFailedState(message: invnetoryresp.error.toString()),
+          );
         }
       } catch (e) {
         debugPrint("-----> $e");

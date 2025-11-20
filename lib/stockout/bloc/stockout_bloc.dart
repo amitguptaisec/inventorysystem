@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/stockout_add_req_model.dart';
 import '../model/stockout_add_resp_model.dart';
@@ -15,21 +16,20 @@ class StockoutBloc extends Bloc<StockoutEvent, StockoutState> {
 
   StockoutBloc({required this.stockoutRepo}) : super(StockoutInitial()) {
     on<StockoutListEvent>((event, emit) async {
+      final prefs = await SharedPreferences.getInstance();
       emit(StockoutLoadingState());
       try {
         StockoutListRespModel stockoutresp = await stockoutRepo.loginpage(
           jsonPostdata: StockoutListRequestModel(
-            userName: event.userId,
-            passWord: event.pasword,
+            userName: prefs.getString("saved_username"),
+            passWord: prefs.getString("saved_password"),
           ),
         );
 
         if (stockoutresp.status == 200) {
           emit(StockoutListSuccessstate(stockoutListResp: stockoutresp));
         } else {
-          emit(
-            StockoutListFailedState(message: stockoutresp.error.toString()),
-          );
+          emit(StockoutListFailedState(message: stockoutresp.error.toString()));
         }
       } catch (e) {
         debugPrint("-----> $e");
@@ -38,12 +38,13 @@ class StockoutBloc extends Bloc<StockoutEvent, StockoutState> {
     });
 
     on<StockoutAddEvent>((event, emit) async {
+      final prefs = await SharedPreferences.getInstance();
       emit(StockoutLoadingState());
       try {
         StockoutAddRespModel stockoutresp = await stockoutRepo.loginpage(
           jsonPostdata: StockoutAddReqModel(
-            userName: event.userId,
-            passWord: event.pasword,
+            userName: prefs.getString("saved_username"),
+            passWord: prefs.getString("saved_password"),
             inventoryId: event.inventoryId,
             quantity: event.quantity,
           ),
@@ -52,9 +53,7 @@ class StockoutBloc extends Bloc<StockoutEvent, StockoutState> {
         if (stockoutresp.status == 200) {
           emit(StockoutAddSuccessstate(stockoutAddResp: stockoutresp));
         } else {
-          emit(
-           StockoutListFailedState(message: stockoutresp.error.toString()),
-          );
+          emit(StockoutListFailedState(message: stockoutresp.error.toString()));
         }
       } catch (e) {
         debugPrint("-----> $e");

@@ -38,7 +38,9 @@ class _InventoryListMasterState extends State<InventoryListMaster> {
         },
         child: BlocBuilder<InventoryBloc, InventoryState>(
           builder: (context, state) {
-            if (state is InventoryInitial) {}
+            if (state is InventoryInitial) {
+              context.read<InventoryBloc>().add(InventoryListEvent());
+            }
             if (state is InventoryLoadingState) {
               Center(child: CircularProgressIndicator());
             }

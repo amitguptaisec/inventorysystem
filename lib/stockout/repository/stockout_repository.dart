@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../network/api_builder.dart';
 import '../../network/api_const.dart';
@@ -18,11 +19,18 @@ class StockoutRepoImpl extends StockoutRepo {
 
   @override
   Future stockoutListpage({jsonPostdata}) async {
+    final prefs = await SharedPreferences.getInstance();
     try {
+      String? tokenval = prefs.getString("saved_token");
       Response response = await _apiClient.post(
         ApiConst.getInventoryList,
         data: json.encode(jsonPostdata),
-        options: Options(headers: {"Content-Type": "application/json"}),
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Token $tokenval",
+          },
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -46,11 +54,18 @@ class StockoutRepoImpl extends StockoutRepo {
 
   @override
   Future stockoutAddpage({jsonPostdata}) async {
+    final prefs = await SharedPreferences.getInstance();
     try {
+      String? tokenval = prefs.getString("saved_token");
       Response response = await _apiClient.post(
         ApiConst.addInventory,
         data: json.encode(jsonPostdata),
-        options: Options(headers: {"Content-Type": "application/json"}),
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Token $tokenval",
+          },
+        ),
       );
 
       if (response.statusCode == 200) {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../network/api_builder.dart';
 import '../../network/api_const.dart';
@@ -10,7 +11,7 @@ import '../model/inventory_list_page_response_model.dart';
 
 abstract class InventoryRepo {
   Future inventoryListpage({required jsonPostdata});
-   Future inventoryAddpage({required jsonPostdata});
+  Future inventoryAddpage({required jsonPostdata});
 }
 
 class InventoryRepoImpl extends InventoryRepo {
@@ -18,24 +19,33 @@ class InventoryRepoImpl extends InventoryRepo {
 
   @override
   Future inventoryListpage({jsonPostdata}) async {
+    final prefs = await SharedPreferences.getInstance();
     try {
+      String? tokenval = prefs.getString("saved_token");
       Response response = await _apiClient.post(
         ApiConst.getInventoryList,
         data: json.encode(jsonPostdata),
-        options: Options(headers: {"Content-Type": "application/json"}),
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Token $tokenval",
+          },
+        ),
       );
 
       if (response.statusCode == 200) {
-        InventoryListRespModel inventoryRespData = InventoryListRespModel.fromJson(
-          response.data,
-        );
+        InventoryListRespModel inventoryRespData =
+            InventoryListRespModel.fromJson(response.data);
         return inventoryRespData;
       } else {
         var error = ExceptionHandler().handleException(response.data["Error"]);
-        InventoryListRespModel inventoryRespData = InventoryListRespModel.fromJson(
-          response.data,
-        );
-        var data = {"Status": 500, "Error": error, "Success": inventoryRespData};
+        InventoryListRespModel inventoryRespData =
+            InventoryListRespModel.fromJson(response.data);
+        var data = {
+          "Status": 500,
+          "Error": error,
+          "Success": inventoryRespData,
+        };
 
         return data;
       }
@@ -43,30 +53,41 @@ class InventoryRepoImpl extends InventoryRepo {
       rethrow;
     }
   }
+
   @override
   Future inventoryAddpage({jsonPostdata}) async {
+    final prefs = await SharedPreferences.getInstance();
     try {
+      String? tokenval = prefs.getString("saved_token");
       Response response = await _apiClient.post(
         ApiConst.addInventory,
         data: json.encode(jsonPostdata),
-        options: Options(headers: {"Content-Type": "application/json"}),
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Token $tokenval",
+          },
+        ),
       );
 
       if (response.statusCode == 200) {
-        InventoryAddRespModel inventoryRespData = InventoryAddRespModel.fromJson(
-          response.data,
-        );
+        InventoryAddRespModel inventoryRespData =
+            InventoryAddRespModel.fromJson(response.data);
         return inventoryRespData;
       } else {
         var error = ExceptionHandler().handleException(response.data["Error"]);
-        InventoryAddRespModel inventoryRespData = InventoryAddRespModel.fromJson(
-          response.data,
-        );
-        var data = {"Status": 500, "Error": error, "Success": inventoryRespData};
+        InventoryAddRespModel inventoryRespData =
+            InventoryAddRespModel.fromJson(response.data);
+        var data = {
+          "Status": 500,
+          "Error": error,
+          "Success": inventoryRespData,
+        };
 
         return data;
       }
     } catch (e) {
       rethrow;
-    }}
+    }
+  }
 }
